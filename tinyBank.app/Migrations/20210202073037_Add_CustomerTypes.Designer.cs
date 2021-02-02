@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tinyBank.Core.Data;
 
 namespace tinyBank.app.Migrations
 {
     [DbContext(typeof(BankDbContext))]
-    partial class BankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210202073037_Add_CustomerTypes")]
+    partial class Add_CustomerTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,19 +66,6 @@ namespace tinyBank.app.Migrations
                         .IsUnique();
 
                     b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("tinyBank.Core.Model.CustomerTypes", b =>
-                {
-                    b.Property<string>("CustomerTypeName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CustomerTypeName");
-
-                    b.HasIndex("CustomerTypeName")
-                        .IsUnique();
-
-                    b.ToTable("CustomerTypes");
                 });
 
             modelBuilder.Entity("tinyBank.Core.Model.Transaction", b =>

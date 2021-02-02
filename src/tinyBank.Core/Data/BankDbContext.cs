@@ -47,6 +47,13 @@ namespace tinyBank.Core.Data
             modelBuilder.Entity<Transaction>()
                 .HasIndex(c => c.TransactionId)
                 .IsUnique();
+
+            modelBuilder.Entity<CustomerTypes>()
+                .ToTable("CustomerTypes");
+
+            modelBuilder.Entity<CustomerTypes>()
+                .HasIndex(c => c.CustomerTypeName)
+                .IsUnique();
         }
     }
 }

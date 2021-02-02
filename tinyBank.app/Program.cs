@@ -15,7 +15,7 @@ namespace tinyBank.app
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("tinyBank initiating...");
 
             var optionsBuilder = new DbContextOptionsBuilder<BankDbContext>();
             optionsBuilder.UseSqlServer(
@@ -45,7 +45,42 @@ namespace tinyBank.app
                 //    CustomerPaymentMethod = PaymentMethod.Card,
                 //    CustomerType = "Personal"
                 //});
+
+                //db.Add(new CustomerTypes
+                //{
+                //    CustomerTypeName = "Personal"
+                //});
+
+                //db.Add(new CustomerTypes
+                //{
+                //    CustomerTypeName = "Merchant"
+                //});
+
                 //db.SaveChanges();
+
+                List<CustomerTypes> customerTypes = db.Set<CustomerTypes>().ToList();
+
+                var newCustomer = new Customer()
+                {
+                    CustomerName = "Kostas PLC",
+                    CustomerPaymentMethod = PaymentMethod.BankTransfer,
+                    CustomerType = customerTypes.Where(c => c.CustomerTypeName == "Merchant").ToString()
+                };
+
+                newCustomer.Accounts.Add(
+                    new Account()
+                    {
+                        AccountBalance = 100
+                    });
+
+                newCustomer.Accounts.Add(
+                    new Account()
+                    {
+                        AccountBalance = (decimal)-300.32
+                    });
+
+                db.Add(newCustomer);
+                db.SaveChanges();
 
                 List<Customer> results = db.Set<Customer>().
                     Where(cust => cust.CustomerPaymentMethod == PaymentMethod.BankTransfer).
@@ -54,6 +89,10 @@ namespace tinyBank.app
                 foreach (Customer item in results)
                 {
                     Console.WriteLine($"Selected: Customer Name {item.CustomerName} with id {item.CustomerId}");
+                    foreach (Account itemAccount in item.Accounts)
+                    {
+                        Console.WriteLine($"Selected: Account Blance {itemAccount.AccountBalance} with id {itemAccount.AccountId}");
+                    }
                 };
             }
         }
