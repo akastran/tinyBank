@@ -19,7 +19,7 @@ namespace tinyBank.Core.Data
         //var config = configuration.ReadAppConfiguration();
 
         public BankDbContext(
-            DbContextOptions<BankDbContext> options) : base(options)
+            DbContextOptions options) : base(options)
         { }
 
         protected override void OnModelCreating(
@@ -48,12 +48,14 @@ namespace tinyBank.Core.Data
                 .HasIndex(c => c.TransactionId)
                 .IsUnique();
 
-            modelBuilder.Entity<CustomerTypes>()
-                .ToTable("CustomerTypes");
+            //modelBuilder.Entity<CustomerTypes>()
+            //    .ToTable("CustomerTypes");
 
-            modelBuilder.Entity<CustomerTypes>()
-                .HasIndex(c => c.CustomerTypeName)
-                .IsUnique();
+            //modelBuilder.Entity<CustomerTypes>()
+            //    .HasKey(c => c.CustomerTypeName);
+                //.HasIndex(c => c.CustomerTypeName)
+                //.IsUnique()
+
         }
     }
 }

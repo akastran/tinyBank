@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace tinyBank.Core.Model
 {
-    public class CustomerTypes
+    public enum CustomerTypes
     {
-        [Key]
-        public string CustomerTypeName { get; set; }
+        Undefined = 0,
+        Personal = 1,
+        Merchant = 2
     }
 }

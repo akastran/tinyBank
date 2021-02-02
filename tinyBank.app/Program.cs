@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using tinyBank.Core.Config.Extensions;
 using tinyBank.Core.Data;
 using tinyBank.Core.Model;
 
@@ -10,16 +11,23 @@ namespace tinyBank.app
 {
     class Program
     {
-        const string connectionString =
-            "Server=localhost;Database=tinyBankdb;User Id=sa;Password=admin!@#123;";
+        //const string connectionString =
+        //    "Server=localhost;Database=tinyBankdb;User Id=sa;Password=admin!@#123;";
 
         static void Main(string[] args)
         {
             Console.WriteLine("tinyBank initiating...");
 
-            var optionsBuilder = new DbContextOptionsBuilder<BankDbContext>();
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath($"{AppDomain.CurrentDomain.BaseDirectory}")
+            .AddJsonFile("appsettings.json", false)
+            .Build();
+
+            var config = configuration.ReadAppConfiguration();
+
+            var optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.UseSqlServer(
-                connectionString,
+                config.TinyBankConnectionString,
                 options =>
                 {
                     options.MigrationsAssembly("tinyBank.app");
@@ -58,40 +66,40 @@ namespace tinyBank.app
 
                 //db.SaveChanges();
 
-                List<CustomerTypes> customerTypes = db.Set<CustomerTypes>().ToList();
+                //var customerTypes = db.Set<CustomerTypes>().ToList();
 
                 var newCustomer = new Customer()
                 {
-                    CustomerName = "Kostas PLC",
+                    CustomerName = "Kostas3 PLC",
                     CustomerPaymentMethod = PaymentMethod.BankTransfer,
-                    CustomerType = customerTypes.Where(c => c.CustomerTypeName == "Merchant").ToString()
+                    CustomerType = CustomerTypes.Merchant
                 };
 
                 newCustomer.Accounts.Add(
                     new Account()
                     {
-                        AccountBalance = 100
+                        AccountBalance = 150
                     });
 
                 newCustomer.Accounts.Add(
                     new Account()
                     {
-                        AccountBalance = (decimal)-300.32
+                        AccountBalance = -350.32M
                     });
 
                 db.Add(newCustomer);
                 db.SaveChanges();
 
-                List<Customer> results = db.Set<Customer>().
+                var results = db.Set<Customer>().
                     Where(cust => cust.CustomerPaymentMethod == PaymentMethod.BankTransfer).
                     ToList();
 
-                foreach (Customer item in results)
+                foreach (var item in results)
                 {
                     Console.WriteLine($"Selected: Customer Name {item.CustomerName} with id {item.CustomerId}");
-                    foreach (Account itemAccount in item.Accounts)
+                    foreach (var itemAccount in item.Accounts)
                     {
-                        Console.WriteLine($"Selected: Account Blance {itemAccount.AccountBalance} with id {itemAccount.AccountId}");
+                        Console.WriteLine($"Selected: Account Balance {itemAccount.AccountBalance} with id {itemAccount.AccountId}");
                     }
                 };
             }

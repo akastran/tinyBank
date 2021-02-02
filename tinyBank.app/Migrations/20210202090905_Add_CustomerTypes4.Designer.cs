@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tinyBank.Core.Data;
 
 namespace tinyBank.app.Migrations
 {
     [DbContext(typeof(BankDbContext))]
-    partial class BankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210202090905_Add_CustomerTypes4")]
+    partial class Add_CustomerTypes4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
