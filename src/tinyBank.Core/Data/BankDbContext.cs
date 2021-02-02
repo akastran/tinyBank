@@ -22,6 +22,10 @@ namespace tinyBank.Core.Data
             DbContextOptions options) : base(options)
         { }
 
+        //public BankDbContext(
+        //    DbContextOptions<BankDbContext> options) : base(options)
+        //{ }
+
         protected override void OnModelCreating(
             ModelBuilder modelBuilder)
         {

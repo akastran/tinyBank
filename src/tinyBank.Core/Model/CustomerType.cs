@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace tinyBank.Core.Model
 {
-    public enum CustomerTypes
+    public enum CustomerType
     {
         Undefined = 0,
         Personal = 1,

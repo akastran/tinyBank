@@ -25,6 +25,7 @@ namespace tinyBank.app
 
             var config = configuration.ReadAppConfiguration();
 
+            //var optionsBuilder = new DbContextOptionsBuilder<BankDbContext>();
             var optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.UseSqlServer(
                 config.TinyBankConnectionString,
@@ -72,7 +73,7 @@ namespace tinyBank.app
                 {
                     CustomerName = "Kostas3 PLC",
                     CustomerPaymentMethod = PaymentMethod.BankTransfer,
-                    CustomerType = CustomerTypes.Merchant
+                    CustomerType = CustomerType.Merchant
                 };
 
                 newCustomer.Accounts.Add(
@@ -90,9 +91,9 @@ namespace tinyBank.app
                 db.Add(newCustomer);
                 db.SaveChanges();
 
-                var results = db.Set<Customer>().
-                    Where(cust => cust.CustomerPaymentMethod == PaymentMethod.BankTransfer).
-                    ToList();
+                var results = db.Set<Customer>()
+                    .Where(cust => cust.CustomerPaymentMethod == PaymentMethod.BankTransfer)
+                    .ToList();
 
                 foreach (var item in results)
                 {

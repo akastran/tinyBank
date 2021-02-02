@@ -10,7 +10,7 @@ namespace tinyBank.Core.Model
     {
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
-        public CustomerTypes CustomerType { get; set; }
+        public CustomerType CustomerType { get; set; }
         public List<Account> Accounts { get; set; }
         public PaymentMethod CustomerPaymentMethod { get; set; }
 
