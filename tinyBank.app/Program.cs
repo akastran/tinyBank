@@ -36,11 +36,11 @@ namespace tinyBank.app
 
             using (var db = new BankDbContext(optionsBuilder.Options))
             {
-                //db.Add(new Customer 
-                //{ 
-                //    CustomerName = "Andreas", 
-                //    CustomerPaymentMethod = PaymentMethod.BankTransfer, 
-                //    CustomerType = "Personal" 
+                //db.Add(new Customer
+                //{
+                //    CustomerName = "Andreas",
+                //    CustomerPaymentMethod = PaymentMethod.BankTransfer,
+                //    CustomerType = CustomerType.Personal
                 //});
                 //db.Add(new Customer 
                 //{
@@ -69,9 +69,10 @@ namespace tinyBank.app
 
                 //var customerTypes = db.Set<CustomerTypes>().ToList();
 
+                //--------------------
                 //var newCustomer = new Customer()
                 //{
-                //    CustomerName = "Kostas3 PLC",
+                //    CustomerName = "Kostas PLC",
                 //    CustomerPaymentMethod = PaymentMethod.BankTransfer,
                 //    CustomerType = CustomerType.Merchant
                 //};
@@ -79,37 +80,39 @@ namespace tinyBank.app
                 //newCustomer.Accounts.Add(
                 //    new Account()
                 //    {
+                //        AccountId = "Account 1",
                 //        AccountBalance = 150
                 //    });
 
                 //newCustomer.Accounts.Add(
                 //    new Account()
                 //    {
+                //        AccountId = "Account 2",
                 //        AccountBalance = -350.32M
                 //    });
 
                 //db.Add(newCustomer);
+                //--------------------
 
                 var accounts = db.Set<Account>()
-                    .Where(c => c.AccountId == "'1")
-                    .ToList();
+                        .Where(c => c.AccountId == "Account 1")
+                        .ToList();
 
-                Transaction newTransaction;
+                //Transaction newTransaction;
                 foreach (var item in accounts)
                 {
                     for (int i = 0; i < 2; i++)
                     {
-                        //AccountId.Transaction = new Transaction()
-                        //{
-                        //    //AccountId = item.AccountId;
-                        //    TransactionCreated = DateTime.Now,
-                        //    TransactionAmount = 11
-                        //};
-
-                        //db.Add(newTransaction);
+                        //item.Transactions.Add(
+                        db.Add(new Transaction()
+                                {
+                                    AccountId = item.AccountId,
+                                    TransactionCreated = DateTime.Now,
+                                    TransactionAmount = 10 + i
+                                });
                     }
                 }
-                
+
                 db.SaveChanges();
 
                 var results = db.Set<Customer>()
