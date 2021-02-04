@@ -21,21 +21,16 @@ namespace tinyBank.app.Migrations
 
             modelBuilder.Entity("tinyBank.Core.Model.Account", b =>
                 {
-                    b.Property<int>("AccountId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                    b.Property<string>("AccountId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("AccountBalance")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.HasKey("AccountId");
-
-                    b.HasIndex("AccountId")
-                        .IsUnique();
 
                     b.HasIndex("CustomerId");
 
@@ -72,8 +67,8 @@ namespace tinyBank.app.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("AccountId")
-                        .HasColumnType("int");
+                    b.Property<string>("AccountId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("TransactionAmount")
                         .HasColumnType("decimal(18,2)");
@@ -95,7 +90,9 @@ namespace tinyBank.app.Migrations
                 {
                     b.HasOne("tinyBank.Core.Model.Customer", null)
                         .WithMany("Accounts")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("tinyBank.Core.Model.Transaction", b =>

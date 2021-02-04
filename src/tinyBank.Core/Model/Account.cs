@@ -8,8 +8,9 @@ namespace tinyBank.Core.Model
 {
     public class Account
     {
-        public int AccountId { get; set; }
+        public string AccountId { get; set; }
         public decimal AccountBalance { get; set; }
+        public int CustomerId { get; set; }
         public List<Transaction> Transactions { get; set; }
 
         public Account()

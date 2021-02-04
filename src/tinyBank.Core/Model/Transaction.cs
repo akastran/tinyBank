@@ -9,6 +9,7 @@ namespace tinyBank.Core.Model
     public class Transaction
     {
         public Guid TransactionId { get; set; }
+        public string AccountId { get; set; }
         public DateTimeOffset TransactionCreated { get; set; }
         public decimal TransactionAmount { get; set; }
     }

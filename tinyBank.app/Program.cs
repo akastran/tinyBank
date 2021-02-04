@@ -69,26 +69,47 @@ namespace tinyBank.app
 
                 //var customerTypes = db.Set<CustomerTypes>().ToList();
 
-                var newCustomer = new Customer()
+                //var newCustomer = new Customer()
+                //{
+                //    CustomerName = "Kostas3 PLC",
+                //    CustomerPaymentMethod = PaymentMethod.BankTransfer,
+                //    CustomerType = CustomerType.Merchant
+                //};
+
+                //newCustomer.Accounts.Add(
+                //    new Account()
+                //    {
+                //        AccountBalance = 150
+                //    });
+
+                //newCustomer.Accounts.Add(
+                //    new Account()
+                //    {
+                //        AccountBalance = -350.32M
+                //    });
+
+                //db.Add(newCustomer);
+
+                var accounts = db.Set<Account>()
+                    .Where(c => c.AccountId == "'1")
+                    .ToList();
+
+                Transaction newTransaction;
+                foreach (var item in accounts)
                 {
-                    CustomerName = "Kostas3 PLC",
-                    CustomerPaymentMethod = PaymentMethod.BankTransfer,
-                    CustomerType = CustomerType.Merchant
-                };
-
-                newCustomer.Accounts.Add(
-                    new Account()
+                    for (int i = 0; i < 2; i++)
                     {
-                        AccountBalance = 150
-                    });
+                        //AccountId.Transaction = new Transaction()
+                        //{
+                        //    //AccountId = item.AccountId;
+                        //    TransactionCreated = DateTime.Now,
+                        //    TransactionAmount = 11
+                        //};
 
-                newCustomer.Accounts.Add(
-                    new Account()
-                    {
-                        AccountBalance = -350.32M
-                    });
-
-                db.Add(newCustomer);
+                        //db.Add(newTransaction);
+                    }
+                }
+                
                 db.SaveChanges();
 
                 var results = db.Set<Customer>()

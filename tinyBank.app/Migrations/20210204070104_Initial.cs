@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace tinyBank.app.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace tinyBank.app.Migrations
                     CustomerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerType = table.Column<int>(type: "int", nullable: false),
                     CustomerPaymentMethod = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -26,10 +26,9 @@ namespace tinyBank.app.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    AccountId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AccountBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,7 +38,7 @@ namespace tinyBank.app.Migrations
                         column: x => x.CustomerId,
                         principalTable: "Customer",
                         principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,9 +46,9 @@ namespace tinyBank.app.Migrations
                 columns: table => new
                 {
                     TransactionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TransactionCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    TransactionAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AccountId = table.Column<int>(type: "int", nullable: true)
+                    TransactionAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,12 +60,6 @@ namespace tinyBank.app.Migrations
                         principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Account_AccountId",
-                table: "Account",
-                column: "AccountId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Account_CustomerId",

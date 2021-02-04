@@ -10,8 +10,8 @@ using tinyBank.Core.Data;
 namespace tinyBank.app.Migrations
 {
     [DbContext(typeof(BankDbContext))]
-    [Migration("20210202073037_Add_CustomerTypes")]
-    partial class Add_CustomerTypes
+    [Migration("20210204070104_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,16 @@ namespace tinyBank.app.Migrations
 
             modelBuilder.Entity("tinyBank.Core.Model.Account", b =>
                 {
-                    b.Property<int>("AccountId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                    b.Property<string>("AccountId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("AccountBalance")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.HasKey("AccountId");
-
-                    b.HasIndex("AccountId")
-                        .IsUnique();
 
                     b.HasIndex("CustomerId");
 
@@ -57,8 +52,8 @@ namespace tinyBank.app.Migrations
                     b.Property<int>("CustomerPaymentMethod")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerType")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CustomerType")
+                        .HasColumnType("int");
 
                     b.HasKey("CustomerId");
 
@@ -74,8 +69,8 @@ namespace tinyBank.app.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("AccountId")
-                        .HasColumnType("int");
+                    b.Property<string>("AccountId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("TransactionAmount")
                         .HasColumnType("decimal(18,2)");
@@ -97,7 +92,9 @@ namespace tinyBank.app.Migrations
                 {
                     b.HasOne("tinyBank.Core.Model.Customer", null)
                         .WithMany("Accounts")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("tinyBank.Core.Model.Transaction", b =>
