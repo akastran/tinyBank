@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tinyBank.app", "tinyBank.app\tinyBank.app.csproj", "{B5D8F6D0-C5D5-4C40-9313-C0CE3FA8C666}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{D90C9FB9-D63F-4ADA-8FC6-45BA25A8726A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tinyBank.app", "app\tinyBank.app\tinyBank.app.csproj", "{B5D8F6D0-C5D5-4C40-9313-C0CE3FA8C666}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1EC2088F-1FDD-4A7A-A64F-2A576B2AE728}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tinyBank.Core", "src\tinyBank.Core\tinyBank.Core.csproj", "{FEBC5322-8AEF-41E6-97B0-4B064C2D0484}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{D90C9FB9-D63F-4ADA-8FC6-45BA25A8726A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

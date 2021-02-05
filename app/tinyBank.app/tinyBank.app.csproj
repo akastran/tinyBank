@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\tinyBank.Core\tinyBank.Core.csproj" />
+    <ProjectReference Include="..\..\src\tinyBank.Core\tinyBank.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
