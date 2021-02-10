@@ -8,8 +8,6 @@ namespace tinyBank.Core.Services.Options
 {
     public class RegisterAccountOptions
     {
-        public string AccountId { get; set; }
-        public decimal AccountBalance { get; set; }
         public int CustomerId { get; set; }
     }
 }

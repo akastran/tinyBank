@@ -20,11 +20,6 @@ namespace tinyBank.Core.Services
 
         public Account Register(RegisterAccountOptions options)
         {
-            if (string.IsNullOrWhiteSpace(options?.AccountId))
-            {
-                return null;
-            }
-
             if ((options?.CustomerId == null) || (options?.CustomerId == 0))
             {
                 return null;
@@ -32,7 +27,6 @@ namespace tinyBank.Core.Services
 
             var account = new Account()
             {
-                AccountId = options.AccountId,
                 AccountBalance = 0,
                 CustomerId = options.CustomerId
             };

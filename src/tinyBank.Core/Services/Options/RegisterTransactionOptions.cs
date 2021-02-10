@@ -9,7 +9,6 @@ namespace tinyBank.Core.Services.Options
     public class RegisterTransactionOptions
     {
         public string AccountId { get; set; }
-        public DateTimeOffset TransactionCreated { get; set; }
         public decimal TransactionAmount { get; set; }
     }
 }
