@@ -10,6 +10,9 @@ namespace tinyBank.Core.Services
 {
     public interface ICustomerService
     {
-        public Customer Register(RegisterCustomerOptions options);
+        public Customer RegisterCustomer(RegisterCustomerOptions options);
+        public Customer RetrieveCustomer(RetrieveCustomerOptions options);
+        public Customer UpdateCustomer(UpdateCustomerOptions options);
+        public Customer DeleteCustomer(DeleteCustomerOptions options);
     }
 }
