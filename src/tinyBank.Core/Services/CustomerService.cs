@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace tinyBank.Core.Services
             _dbContext = dbContext;
         }
 
-        public Customer RegisterCustomer(RegisterCustomerOptions options)
+        public async Task<Customer> RegisterCustomerAsync(RegisterCustomerOptions options)
         {
             if (string.IsNullOrWhiteSpace(options?.CustomerName))
             {
@@ -54,25 +55,25 @@ namespace tinyBank.Core.Services
             };
 
             _dbContext.Add(customer);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             return customer;
         }
 
-        public Customer RetrieveCustomer(RetrieveCustomerOptions options)
+        public async Task<Customer> RetrieveCustomerAsync(RetrieveCustomerOptions options)
         {
-            var dbCustomer = _dbContext.Set<Customer>()
+            var dbCustomer = await _dbContext.Set<Customer>()
                 .Where(c => c.CustomerId == options.CustomerId)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             return dbCustomer;
         }
 
-        public Customer UpdateCustomer(UpdateCustomerOptions options)
+        public async Task<Customer> UpdateCustomerAsync(UpdateCustomerOptions options)
         {
-            var dbCustomer = _dbContext.Set<Customer>()
+            var dbCustomer = await _dbContext.Set<Customer>()
                 .Where(c => c.CustomerId == options.CustomerId)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             if (options?.CustomerName != null)
             {
@@ -112,19 +113,19 @@ namespace tinyBank.Core.Services
             }
 
             _dbContext.Update(dbCustomer);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             return dbCustomer;
         }
 
-        public Customer DeleteCustomer(DeleteCustomerOptions options)
+        public async Task<Customer> DeleteCustomerAsync(DeleteCustomerOptions options)
         {
-            var dbCustomer = _dbContext.Set<Customer>()
+            var dbCustomer = await _dbContext.Set<Customer>()
                 .Where(c => c.CustomerName == options.CustomerName)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             _dbContext.Remove(dbCustomer);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             return dbCustomer;
         }

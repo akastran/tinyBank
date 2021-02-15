@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using tinyBank.Core.Model;
 using tinyBank.Core.Services;
 using Xunit;
@@ -21,7 +23,7 @@ namespace tinyBank.Core.Tests
         }
 
         [Fact]
-        public void Add_Customer()
+        public async Task Add_CustomerAsync()
         {
             var options = new Services.Options.RegisterCustomerOptions()
             {
@@ -32,13 +34,13 @@ namespace tinyBank.Core.Tests
                 CustomerPaymentMethod = PaymentMethod.BankTransfer
             };
 
-            var customer = _customers.RegisterCustomer(options);
+            var customer = await _customers.RegisterCustomerAsync(options);
 
             Assert.NotNull(customer);
 
-            var savedCustomer = _dbContext.Set<Customer>()
+            var savedCustomer = await _dbContext.Set<Customer>()
                 .Where(c => c.CustomerId == customer.CustomerId)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
             
             Assert.NotNull(savedCustomer);
             Assert.Equal(options.CustomerName, savedCustomer.CustomerName);
@@ -48,14 +50,14 @@ namespace tinyBank.Core.Tests
         }
 
         [Fact]
-        public void Get_Customer()
+        public async Task Get_CustomerAsync()
         {
             var options = new Services.Options.RetrieveCustomerOptions()
             {
                 CustomerId = 3
             };
 
-            var customer = _customers.RetrieveCustomer(options);
+            var customer = await _customers.RetrieveCustomerAsync(options);
 
             Assert.NotNull(customer);
 
@@ -71,7 +73,7 @@ namespace tinyBank.Core.Tests
         }
 
         [Fact]
-        public void Change_Customer()
+        public async Task Change_CustomerAsync()
         {
             var options = new Services.Options.UpdateCustomerOptions()
             {
@@ -83,13 +85,13 @@ namespace tinyBank.Core.Tests
                 //CustomerPaymentMethod = PaymentMethod.BankTransfer
             };
 
-            var customer = _customers.UpdateCustomer(options);
+            var customer = await _customers.UpdateCustomerAsync(options);
 
             Assert.NotNull(customer);
 
-            var savedCustomer = _dbContext.Set<Customer>()
+            var savedCustomer = await _dbContext.Set<Customer>()
                 .Where(c => c.CustomerId == customer.CustomerId)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             Assert.NotNull(savedCustomer);
             Assert.Equal(options.CustomerName, savedCustomer.CustomerName);
@@ -99,20 +101,20 @@ namespace tinyBank.Core.Tests
         }
 
         [Fact]
-        public void Delete_Customer()
+        public async Task Delete_CustomerAsync()
         {
             var options = new Services.Options.DeleteCustomerOptions()
             {
                 CustomerName = "John2"
             };
 
-            var customer = _customers.DeleteCustomer(options);
+            var customer = await _customers.DeleteCustomerAsync(options);
 
             Assert.NotNull(customer);
 
-            var savedCustomer = _dbContext.Set<Customer>()
+            var savedCustomer = await _dbContext.Set<Customer>()
                 .Where(c => c.CustomerName == customer.CustomerName)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             Assert.Null(savedCustomer);
         }
