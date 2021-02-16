@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["app/tinyBank.api/tinyBank.Api/tinyBank.Api.csproj", "app/tinyBank.api/tinyBank.Api/"]
-RUN dotnet restore "app/tinyBank.api/tinyBank.Api/tinyBank.Api.csproj"
+COPY ["app/tinyBank.Api/tinyBank.Api.csproj", "app/tinyBank.api/"]
+RUN dotnet restore "app/tinyBank.Api/tinyBank.Api.csproj"
 COPY . .
-WORKDIR "/src/app/tinyBank.api/tinyBank.Api"
+WORKDIR "/src/app/tinyBank.api"
 RUN dotnet build "tinyBank.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
