@@ -10,8 +10,8 @@ using tinyBank.Core.Data;
 namespace tinyBank.app.Migrations
 {
     [DbContext(typeof(BankDbContext))]
-    [Migration("20210204070104_Initial")]
-    partial class Initial
+    [Migration("20210217181308_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,9 @@ namespace tinyBank.app.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("AFM")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(max)");
 
@@ -54,6 +57,9 @@ namespace tinyBank.app.Migrations
 
                     b.Property<int>("CustomerType")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TotalGross")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("CustomerId");
 

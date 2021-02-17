@@ -28,6 +28,8 @@ namespace tinyBank.Core.Services.Extensions
                  });
 
             @this.AddScoped<ICustomerService, CustomerService>();
+            @this.AddScoped<ITransactionService, TransactionService>();
+            @this.AddScoped<IAccountService, AccountService>();
         }
     }
 }

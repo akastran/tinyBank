@@ -14,5 +14,6 @@ namespace tinyBank.Core.Services.Options
         public string AFM { get; set; }
         public CustomerType CustomerType { get; set; }
         public PaymentMethod CustomerPaymentMethod { get; set; }
+        public decimal TotalGross { get; set; }
     }
 }

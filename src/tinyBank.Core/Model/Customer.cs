@@ -14,6 +14,7 @@ namespace tinyBank.Core.Model
         public string AFM { get; set; }
         public List<Account> Accounts { get; set; }
         public PaymentMethod CustomerPaymentMethod { get; set; }
+        public decimal TotalGross { get; set; }
 
         public Customer()
         {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace tinyBank.app.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,9 @@ namespace tinyBank.app.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerType = table.Column<int>(type: "int", nullable: false),
-                    CustomerPaymentMethod = table.Column<int>(type: "int", nullable: false)
+                    AFM = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerPaymentMethod = table.Column<int>(type: "int", nullable: false),
+                    TotalGross = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {

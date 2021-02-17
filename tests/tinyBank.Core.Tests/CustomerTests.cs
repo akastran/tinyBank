@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using tinyBank.Core.Constants;
 using tinyBank.Core.Model;
 using tinyBank.Core.Services;
 using Xunit;
@@ -11,12 +12,12 @@ namespace tinyBank.Core.Tests
 {
     public class CustomerTests : IClassFixture<TinyBankFixture>
     {
-        private ICustomerService _customers;
+        private ICustomerService _customer;
         private Data.BankDbContext _dbContext;
 
         public CustomerTests(TinyBankFixture fixture)
         {
-            _customers = fixture.Scope.ServiceProvider
+            _customer = fixture.Scope.ServiceProvider
                 .GetRequiredService<ICustomerService>();
             _dbContext = fixture.Scope.ServiceProvider
                 .GetRequiredService<Data.BankDbContext>();
@@ -27,14 +28,15 @@ namespace tinyBank.Core.Tests
         {
             var options = new Services.Options.RegisterCustomerOptions()
             {
-                CustomerName = "John2",
+                CustomerName = "John",
                 //AFM = $"{System.Guid.NewGuid()}",
                 AFM = System.Guid.NewGuid().ToString().Substring(0,9),
-                CustomerType = CustomerType.Merchant,
-                CustomerPaymentMethod = PaymentMethod.BankTransfer
+                CustomerType = CustomerType.Personal,
+                CustomerPaymentMethod = PaymentMethod.BankTransfer,
+                TotalGross = 0M
             };
 
-            var customer = await _customers.RegisterCustomerAsync(options);
+            var customer = await _customer.RegisterCustomerAsync(options);
 
             Assert.NotNull(customer);
 
@@ -47,6 +49,7 @@ namespace tinyBank.Core.Tests
             Assert.Equal(options.AFM, savedCustomer.AFM);
             Assert.Equal(options.CustomerType, savedCustomer.CustomerType);
             Assert.Equal(options.CustomerPaymentMethod, savedCustomer.CustomerPaymentMethod);
+            Assert.Equal(options.TotalGross, savedCustomer.TotalGross);
         }
 
         [Fact]
@@ -57,7 +60,7 @@ namespace tinyBank.Core.Tests
                 CustomerId = 3
             };
 
-            var customer = await _customers.RetrieveCustomerAsync(options);
+            var customer = await _customer.RetrieveCustomerAsync(options);
 
             Assert.NotNull(customer);
 
@@ -85,7 +88,7 @@ namespace tinyBank.Core.Tests
                 //CustomerPaymentMethod = PaymentMethod.BankTransfer
             };
 
-            var customer = await _customers.UpdateCustomerAsync(options);
+            var customer = await _customer.UpdateCustomerAsync(options);
 
             Assert.NotNull(customer);
 
@@ -108,7 +111,7 @@ namespace tinyBank.Core.Tests
                 CustomerName = "John2"
             };
 
-            var customer = await _customers.DeleteCustomerAsync(options);
+            var customer = await _customer.DeleteCustomerAsync(options);
 
             Assert.NotNull(customer);
 
@@ -117,6 +120,86 @@ namespace tinyBank.Core.Tests
                 .SingleOrDefaultAsync();
 
             Assert.Null(savedCustomer);
+        }
+
+        [Fact]
+        public void ParseExcelFile_Success()
+        {
+            var result = _customer.ParseFile(
+                @"C:\Users\E40141\source\repos\tinyBank\tests\tinyBank.Core.Tests\bin\Debug\net5.0\Files\Book1.xlsx");
+
+            Assert.Equal(ResultCode.Success, result.Code);
+            Assert.NotNull(result.Data);
+            Assert.Equal(2, result.Data.Count);
+
+            var customer = result.Data[0];
+            Assert.Equal("Dimitris", customer.CustomerName);
+            Assert.Equal("987654321", customer.AFM);
+            Assert.Equal(1500.33M, customer.TotalGross);
+            Assert.Equal(CustomerType.Personal, customer.CustomerType);
+            Assert.Equal(PaymentMethod.Card, customer.CustomerPaymentMethod);
+
+            customer = result.Data[1];
+            Assert.Equal("Andreas", customer.CustomerName);
+            Assert.Equal("123456789", customer.AFM);
+            Assert.Equal(30.75M, customer.TotalGross);
+            Assert.Equal(CustomerType.Personal, customer.CustomerType);
+            Assert.Equal(PaymentMethod.Card, customer.CustomerPaymentMethod);
+        }
+
+        [Fact]
+        public void ParseExcelFile_And_Register_Customer_Success()
+        {
+            var result = _customer.ParseFile(
+                @"C:\Users\E40141\source\repos\tinyBank\tests\tinyBank.Core.Tests\bin\Debug\net5.0\Files\Book1.xlsx");
+
+            Assert.Equal(ResultCode.Success, result.Code);
+            Assert.NotNull(result.Data);
+            Assert.Equal(2, result.Data.Count);
+
+            var customer = result.Data[0];
+            Assert.Equal("Dimitris", customer.CustomerName);
+            Assert.Equal("987654321", customer.AFM);
+            Assert.Equal(1500.33M, customer.TotalGross);
+            Assert.Equal(CustomerType.Personal, customer.CustomerType);
+            Assert.Equal(PaymentMethod.Card, customer.CustomerPaymentMethod);
+
+            customer = result.Data[1];
+            Assert.Equal("Andreas", customer.CustomerName);
+            Assert.Equal("123456789", customer.AFM);
+            Assert.Equal(30.75M, customer.TotalGross);
+            Assert.Equal(CustomerType.Personal, customer.CustomerType);
+            Assert.Equal(PaymentMethod.Card, customer.CustomerPaymentMethod);
+
+            Customer newCustomer = new Customer();
+            Customer savedCustomer = new Customer();
+
+            foreach (var item in result.Data)
+            {
+                var options = new Services.Options.RegisterCustomerOptions()
+                {
+                    CustomerName = item.CustomerName,
+                    AFM = item.AFM,
+                    CustomerType = item.CustomerType,
+                    CustomerPaymentMethod = item.CustomerPaymentMethod,
+                    TotalGross = item.TotalGross
+                };
+
+                newCustomer = _customer.RegisterCustomer(options);
+
+                Assert.NotNull(newCustomer);
+
+                savedCustomer = _dbContext.Set<Customer>()
+                .Where(c => c.CustomerName == newCustomer.CustomerName)
+                .SingleOrDefault();
+
+                Assert.NotNull(savedCustomer);
+                Assert.Equal(options.CustomerName, savedCustomer.CustomerName);
+                Assert.Equal(options.AFM, savedCustomer.AFM);
+                Assert.Equal(options.CustomerType, savedCustomer.CustomerType);
+                Assert.Equal(options.CustomerPaymentMethod, savedCustomer.CustomerPaymentMethod);
+                Assert.Equal(options.TotalGross, savedCustomer.TotalGross);
+            }
         }
     }
 }

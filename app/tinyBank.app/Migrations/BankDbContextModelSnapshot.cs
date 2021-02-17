@@ -56,6 +56,9 @@ namespace tinyBank.app.Migrations
                     b.Property<int>("CustomerType")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("TotalGross")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("CustomerId");
 
                     b.HasIndex("CustomerId")
