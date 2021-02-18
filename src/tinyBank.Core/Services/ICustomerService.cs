@@ -16,5 +16,6 @@ namespace tinyBank.Core.Services
         public Task<Customer> UpdateCustomerAsync(UpdateCustomerOptions options);
         public Task<Customer> DeleteCustomerAsync(DeleteCustomerOptions options);
         public Result<List<Customer>> ParseFile(string path);
+        public Task ExportCustomerFileAsync(List<Customer> customerList, string path);
     }
 }

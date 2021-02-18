@@ -296,5 +296,37 @@ namespace tinyBank.Core.Services
                 Data = results
             };
         }
+
+        public async Task ExportCustomerFileAsync(List<Customer> customerList, string path)
+        {
+            //try
+            //{
+            //    var mapper2 = new Mapper();
+            //} catch (Exception ex)
+            //{
+            //    Console.Write(ex);
+            //}
+            var mapper = new Mapper();
+
+            foreach (var item in customerList)
+            {
+                //if (item != null)
+                //{
+                    //mapper.Map<Customer>(1, $"{nameof(Customer.CustomerName)}",
+                    //    (columnInfo, customer) => {
+
+                    //        var customerName = columnInfo.CurrentValue.ToString();
+
+                    //        ((Customer)customer).CustomerName = customerName;
+
+                    //        return true;
+                    //    });
+                //}
+                //mapper.Put<Customer>(customerList, "sheet1", true);
+                //mapper.Save<Customer>(path, "sheet1", true);
+            }
+            //mapper.Put<Customer>(customerList, "sheet1", true);
+            mapper.Save(path, customerList, "sheet1", overwrite: true);
+        }
     }
 }

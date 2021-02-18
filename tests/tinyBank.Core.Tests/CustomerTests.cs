@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tinyBank.Core.Constants;
@@ -200,6 +201,27 @@ namespace tinyBank.Core.Tests
                 Assert.Equal(options.CustomerPaymentMethod, savedCustomer.CustomerPaymentMethod);
                 Assert.Equal(options.TotalGross, savedCustomer.TotalGross);
             }
+        }
+
+        [Fact]
+        public async Task ExportExcel_SuccessAsync()
+        {
+            var options = new Services.Options.RetrieveCustomerOptions()
+            {
+                CustomerId = 5
+            };
+
+            var customer = await _customer.RetrieveCustomerAsync(options);
+
+            Assert.NotNull(customer);
+
+            var newCustomerList = new List<Customer>();
+            newCustomerList.Add(customer);
+
+            var path = @"C:\Users\E40141\source\repos\tinyBank\tests\tinyBank.Core.Tests\bin\Debug\net5.0\Files\Book2.xlsx";
+            var result = _customer.ExportCustomerFileAsync(
+                newCustomerList,
+                path);
         }
     }
 }
