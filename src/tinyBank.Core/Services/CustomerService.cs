@@ -70,52 +70,52 @@ namespace tinyBank.Core.Services
             return customer;
         }
 
-        public Customer RegisterCustomer(RegisterCustomerOptions options)
-        {
-            if (string.IsNullOrWhiteSpace(options?.CustomerName))
-            {
-                return null;
-            }
+        //public Customer RegisterCustomer(RegisterCustomerOptions options)
+        //{
+        //    if (string.IsNullOrWhiteSpace(options?.CustomerName))
+        //    {
+        //        return null;
+        //    }
 
-            if (string.IsNullOrWhiteSpace(options?.AFM))
-            {
-                return null;
-            }
+        //    if (string.IsNullOrWhiteSpace(options?.AFM))
+        //    {
+        //        return null;
+        //    }
 
-            if (options.AFM.Length != 9)
-            {
-                return null;
-            }
+        //    if (options.AFM.Length != 9)
+        //    {
+        //        return null;
+        //    }
 
-            if (options?.CustomerType == CustomerType.Undefined)
-            {
-                return null;
-            }
+        //    if (options?.CustomerType == CustomerType.Undefined)
+        //    {
+        //        return null;
+        //    }
 
-            if (options?.CustomerPaymentMethod == PaymentMethod.Undefined)
-            {
-                return null;
-            }
+        //    if (options?.CustomerPaymentMethod == PaymentMethod.Undefined)
+        //    {
+        //        return null;
+        //    }
 
-            if (options?.TotalGross == null)
-            {
-                return null;
-            }
+        //    if (options?.TotalGross == null)
+        //    {
+        //        return null;
+        //    }
 
-            var customer = new Customer()
-            {
-                CustomerName = options.CustomerName,
-                AFM = options.AFM,
-                CustomerType = options.CustomerType,
-                CustomerPaymentMethod = options.CustomerPaymentMethod,
-                TotalGross = options.TotalGross
-            };
+        //    var customer = new Customer()
+        //    {
+        //        CustomerName = options.CustomerName,
+        //        AFM = options.AFM,
+        //        CustomerType = options.CustomerType,
+        //        CustomerPaymentMethod = options.CustomerPaymentMethod,
+        //        TotalGross = options.TotalGross
+        //    };
 
-            _dbContext.Add(customer);
-            _dbContext.SaveChanges();
+        //    _dbContext.Add(customer);
+        //    _dbContext.SaveChanges();
 
-            return customer;
-        }
+        //    return customer;
+        //}
 
         public async Task<Customer> RetrieveCustomerAsync(RetrieveCustomerOptions options)
         {
@@ -251,11 +251,28 @@ namespace tinyBank.Core.Services
             mapper.Map<Customer>("Method", $"{nameof(Customer.CustomerPaymentMethod)}",
                 (columnInfo, customer) => {
 
+                    //ΛΕΚΤΙΚΟ
                     var paymentMethod = Enum.Parse<PaymentMethod>(columnInfo.CurrentValue.ToString(), true);
-
                     ((Customer)customer).CustomerPaymentMethod = paymentMethod;
-
                     return true;
+
+                    //ΝΟΥΜΕΡΟ
+                    //var paymentMethod = int.Parse(columnInfo.CurrentValue.ToString());
+                    //var isDefined = Enum.IsDefined(typeof(PaymentMethod), paymentMethod);
+
+                    //if (isDefined)
+                    //{
+                    //    if (int.TryParse(columnInfo.CurrentValue.ToString(), out var myInt))
+                    //    {
+                    //        ((Customer)customer).CustomerPaymentMethod = (PaymentMethod)myInt;
+                    //    }
+
+                    //    return true;
+                    //}
+                    //else
+                    //{
+                    //    return false;
+                    //}
                 });
 
             mapper.Map<Customer>("AFM", $"{nameof(Customer.AFM)}",
