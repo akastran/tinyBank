@@ -149,7 +149,7 @@ namespace tinyBank.Core.Tests
         }
 
         [Fact]
-        public async Task ParseExcelFile_And_Register_Customer_SuccessAsync()
+        public void ParseExcelFile_And_Register_Customer_Success()
         {
             var result = _customer.ParseFile(
                 @"C:\Users\E40141\source\repos\tinyBank\tests\tinyBank.Core.Tests\bin\Debug\net5.0\Files\Book1.xlsx");
@@ -172,8 +172,8 @@ namespace tinyBank.Core.Tests
             Assert.Equal(CustomerType.Personal, customer.CustomerType);
             Assert.Equal(PaymentMethod.Card, customer.CustomerPaymentMethod);
 
-            var newCustomer = new Customer();
-            var savedCustomer = new Customer();
+            Customer newCustomer = new Customer();
+            Customer savedCustomer = new Customer();
 
             foreach (var item in result.Data)
             {
@@ -186,13 +186,13 @@ namespace tinyBank.Core.Tests
                     TotalGross = item.TotalGross
                 };
 
-                newCustomer = await _customer.RegisterCustomerAsync(options);
+                newCustomer = _customer.RegisterCustomer(options);
 
                 Assert.NotNull(newCustomer);
 
-                savedCustomer = await _dbContext.Set<Customer>()
+                savedCustomer = _dbContext.Set<Customer>()
                 .Where(c => c.CustomerName == newCustomer.CustomerName)
-                .SingleOrDefaultAsync();
+                .SingleOrDefault();
 
                 Assert.NotNull(savedCustomer);
                 Assert.Equal(options.CustomerName, savedCustomer.CustomerName);
